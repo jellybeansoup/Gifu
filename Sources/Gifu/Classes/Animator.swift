@@ -107,6 +107,24 @@ public class Animator {
     attachDisplayLink()
   }
 
+  /// Prepares the animator instance for animation.
+  ///
+  /// - parameter imageSource: Core Graphics image source.
+  /// - parameter size: The target size of the individual frames.
+  /// - parameter contentMode: The view content mode to use for the individual frames.
+  /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
+  /// - parameter completionHandler: Completion callback function
+  func prepareForAnimation(withImageSource imageSource: CGImageSource, size: CGSize, contentMode: UIView.ContentMode, loopCount: Int = 0, completionHandler: (() -> Void)? = nil) {
+    frameStore = FrameStore(imageSource: imageSource,
+  						  size: size,
+  						  contentMode: contentMode,
+  						  framePreloadCount: frameBufferCount,
+  						  loopCount: loopCount)
+    frameStore!.shouldResizeFrames = shouldResizeFrames
+    frameStore!.prepareFrames(completionHandler)
+    attachDisplayLink()
+  }
+
   /// Add the display link to the main run loop.
   private func attachDisplayLink() {
     displayLink.add(to: .main, forMode: RunLoop.Mode.common)

@@ -84,9 +84,19 @@ class FrameStore {
   ///
   /// - parameter data: The raw GIF image data.
   /// - parameter delegate: An `Animatable` delegate.
-  init(data: Data, size: CGSize, contentMode: UIView.ContentMode, framePreloadCount: Int, loopCount: Int) {
+  convenience init(data: Data, size: CGSize, contentMode: UIView.ContentMode, framePreloadCount: Int, loopCount: Int) {
     let options = [String(kCGImageSourceShouldCache): kCFBooleanFalse] as CFDictionary
-    self.imageSource = CGImageSourceCreateWithData(data as CFData, options) ?? CGImageSourceCreateIncremental(options)
+    let imageSource = CGImageSourceCreateWithData(data as CFData, options) ?? CGImageSourceCreateIncremental(options)
+
+	self.init(imageSource: imageSource, size: size, contentMode: contentMode, framePreloadCount: framePreloadCount, loopCount: loopCount)
+  }
+
+  /// Creates an animator instance from raw image source and an `Animatable` delegate.
+  ///
+  /// - parameter imageSource: The decoded Core Graphics image source.
+  /// - parameter delegate: An `Animatable` delegate.
+  init(imageSource: CGImageSource, size: CGSize, contentMode: UIView.ContentMode, framePreloadCount: Int, loopCount: Int) {
+    self.imageSource = imageSource
     self.size = size
     self.contentMode = contentMode
     self.bufferFrameCount = framePreloadCount

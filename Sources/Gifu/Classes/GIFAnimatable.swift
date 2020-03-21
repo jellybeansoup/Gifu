@@ -137,6 +137,20 @@ extension GIFAnimatable {
 
   /// Prepare for animation and start animating immediately.
   ///
+  /// - parameter imageSource: Core Graphics image source.
+  /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
+  public func prepareForAnimation(withImageSource imageSource: CGImageSource,
+                                  loopCount: Int = 0,
+                                  completionHandler: (() -> Void)? = nil) {
+    animator?.prepareForAnimation(withImageSource: imageSource,
+                                  size: frame.size,
+                                  contentMode: contentMode,
+                                  loopCount: loopCount,
+                                  completionHandler: completionHandler)
+  }
+
+  /// Prepare for animation and start animating immediately.
+  ///
   /// - parameter imageURL: GIF image url.
   /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
   public func prepareForAnimation(withGIFURL imageURL: URL,
